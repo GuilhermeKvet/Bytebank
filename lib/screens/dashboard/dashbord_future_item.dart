@@ -29,7 +29,7 @@ class FeatureItem extends StatelessWidget {
                 Icon(
                   icon,
                   color: Colors.white,
-                  size: 24,
+                  size: 24.0,
                 ),
                 Text(
                   name,

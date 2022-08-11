@@ -3,7 +3,6 @@ class I18NMessages {
   I18NMessages(this._messages);
 
   String? get(String key) {
-    assert(key != null);
     assert(_messages.containsKey(key));
     return _messages[key];
   }
