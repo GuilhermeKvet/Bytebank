@@ -29,43 +29,49 @@ class DashboardView extends StatelessWidget {
           builder: (context, state) => Text('Welcome $state'),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Image.asset('images/bytebank_logo.png'),
-          ),
-          SingleChildScrollView(
-            //Container adicionado para poder encapsular o listView que permite
-            //acrescentar mais features quando precisar, assim podemos ter acesso
-            // a rolagem de tela.
-            child: Container(
-              height: 130,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  FeatureItem(
-                    name: i18n.transfer!,
-                    icon: Icons.monetization_on,
-                    onClick: () => _showContactsPage(context),
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Image.asset('images/bytebank_logo.png'),
+                ),
+
+                //Container adicionado para poder encapsular o listView que permite
+                //acrescentar mais features quando precisar, assim podemos ter acesso
+                // a rolagem de tela.
+                Container(
+                  height: 130,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      FeatureItem(
+                        name: i18n.transfer!,
+                        icon: Icons.monetization_on,
+                        onClick: () => _showContactsPage(context),
+                      ),
+                      FeatureItem(
+                        name: i18n.transactioFeed!,
+                        icon: Icons.description,
+                        onClick: () => _showTransectionsPage(context),
+                      ),
+                      FeatureItem(
+                        name: i18n.changeName!,
+                        icon: Icons.person_outline,
+                        onClick: () => _showChangeName(context),
+                      ),
+                    ],
                   ),
-                  FeatureItem(
-                    name: i18n.transactioFeed!,
-                    icon: Icons.description,
-                    onClick: () => _showTransectionsPage(context),
-                  ),
-                  FeatureItem(
-                    name: i18n.changeName!,
-                    icon: Icons.person_outline,
-                    onClick: () => _showChangeName(context),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

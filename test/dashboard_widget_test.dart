@@ -41,7 +41,8 @@ void main() {
     final mainImage = find.byType(Image);
     expect(mainImage, findsOneWidget);
   });
-  testWidgets('Should display the first feature when the Dashboard is opened',
+  testWidgets(
+      'Should display the transfer feature when the Dashboard is opened',
       (tester) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -70,7 +71,49 @@ void main() {
         ),
       ),
     );
-    final firstFeature = find.byType(FeatureItem);
-    expect(firstFeature, findsWidgets);
+    final transferFeatureItem = find.byWidgetPredicate((widget) =>
+        featureItemMatcher(widget, 'Transfer', Icons.monetization_on));
+    expect(transferFeatureItem, findsOneWidget);
   });
+  testWidgets(
+      'Should display the transaction feed feature when the Dashboard is opened',
+      (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<CurrentLocaleCubit>(
+              create: (BuildContext contextCL) => CurrentLocaleCubit(),
+            ),
+            BlocProvider<NameCubit>(
+              create: (BuildContext contextNC) => NameCubit('Guilherme'),
+            ),
+            BlocProvider<I18NMessagesCubit>(
+              create: (BuildContext contextI18N) =>
+                  I18NMessagesCubit("dashboard"),
+            ),
+          ],
+          child: DashboardView(
+            I18NMessages(
+              {
+                "Transfer": "Transfer",
+                "Transaction_feed": "Transaction Feed",
+                "Change_name": "Change Name"
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+    final transactionFeedFeatureItem = find.byWidgetPredicate((widget) =>
+        featureItemMatcher(widget, 'Transaction Feed', Icons.description));
+    expect(transactionFeedFeatureItem, findsOneWidget);
+  });
+}
+
+bool featureItemMatcher(Widget widget, String name, IconData icon) {
+  if (widget is FeatureItem) {
+    return widget.name == name && widget.icon == icon;
+  }
+  return false;
 }
