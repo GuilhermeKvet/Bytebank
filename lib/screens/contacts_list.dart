@@ -4,6 +4,7 @@ import 'package:new_bytebank/dao/contact_dao.dart';
 import 'package:new_bytebank/models/Contact.dart';
 import 'package:new_bytebank/screens/contact_form.dart';
 import 'package:new_bytebank/screens/transaction_form.dart';
+import 'package:new_bytebank/widget/app_dependecies.dart';
 
 import '../components/progress/circularProgress.dart';
 import '../components/container.dart';
@@ -46,14 +47,14 @@ class ContactListCubit extends Cubit<ContactListState> {
 class ContactsListContainer extends BlocContainer {
   @override
   Widget build(BuildContext context) {
-    final ContactDao dao = ContactDao();
+    final dependencies = AppDependecies.of(context);
     return BlocProvider<ContactListCubit>(
       create: (context) {
         final cubit = ContactListCubit();
-        cubit.reload(dao);
+        cubit.reload(dependencies!.contactDao);
         return cubit;
       },
-      child: ContactList(dao),
+      child: ContactList(dependencies!.contactDao),
     );
   }
 }

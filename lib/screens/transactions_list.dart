@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:new_bytebank/components/centered_message.dart';
-import 'package:new_bytebank/http/web_clients/transaction_webclient.dart';
+import 'package:new_bytebank/widget/app_dependecies.dart';
 
 import '../components/progress/circularProgress.dart';
 import '../models/transaction.dart';
 
 class TransactionsList extends StatelessWidget {
-  final TransactionWebclient _webclient = TransactionWebclient();
   @override
   Widget build(BuildContext context) {
+    final dependecies = AppDependecies.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Transactions'),
       ),
       body: FutureBuilder<List<Transaction>>(
-        future: _webclient.findAll(),
+        future: dependecies!.transactionWebclient.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:

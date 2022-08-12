@@ -8,6 +8,8 @@ import 'package:new_bytebank/models/name.dart';
 import 'package:new_bytebank/screens/dashboard/dashboard_view.dart';
 import 'package:new_bytebank/screens/dashboard/dashbord_future_item.dart';
 
+import 'matchers.dart';
+
 void main() {
   testWidgets('Should display the main image when the Dashboard is opended',
       (WidgetTester tester) async {
@@ -109,11 +111,4 @@ void main() {
         featureItemMatcher(widget, 'Transaction Feed', Icons.description));
     expect(transactionFeedFeatureItem, findsOneWidget);
   });
-}
-
-bool featureItemMatcher(Widget widget, String name, IconData icon) {
-  if (widget is FeatureItem) {
-    return widget.name == name && widget.icon == icon;
-  }
-  return false;
 }

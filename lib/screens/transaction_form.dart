@@ -8,6 +8,7 @@ import 'package:new_bytebank/components/container.dart';
 import 'package:new_bytebank/components/progress/progress_view.dart';
 import 'package:new_bytebank/components/response_dialog.dart';
 import 'package:new_bytebank/components/transaction_auth_dialog.dart';
+import 'package:new_bytebank/widget/app_dependecies.dart';
 import 'package:uuid/uuid.dart';
 import '../components/error.dart';
 import '../http/web_clients/transaction_webclient.dart';
@@ -43,13 +44,15 @@ class FatalErrorState extends TransactionFormState {
 
 class TransactionFormCubit extends Cubit<TransactionFormState> {
   TransactionFormCubit() : super(const ShowFormState());
-  final TransactionWebclient _webclient = TransactionWebclient();
+  // final TransactionWebclient _webclient = TransactionWebclient();
 
   void save(Transaction transactionCreated, String password,
       BuildContext context) async {
     emit(const SendingState());
     try {
-      await _webclient.save(transactionCreated, password);
+      final dependecies = AppDependecies.of(context);
+      await dependecies!.transactionWebclient
+          .save(transactionCreated, password);
       emit(const SentState());
     } on HttpException catch (error) {
       if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {

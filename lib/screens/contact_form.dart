@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:new_bytebank/components/editor.dart';
+import 'package:new_bytebank/dao/contact_dao.dart';
 import 'package:new_bytebank/models/Contact.dart';
-
-import '../dao/contact_dao.dart';
+import 'package:new_bytebank/widget/app_dependecies.dart';
 
 class ContactForm extends StatefulWidget {
   final TextEditingController _controllerName = TextEditingController();
@@ -15,9 +15,9 @@ class ContactForm extends StatefulWidget {
 }
 
 class _contactFormState extends State<ContactForm> {
-  final ContactDao _dao = ContactDao();
   @override
   Widget build(BuildContext context) {
+    final dependecies = AppDependecies.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('New Contact'),
@@ -44,7 +44,7 @@ class _contactFormState extends State<ContactForm> {
                   width: double.maxFinite,
                   child: ElevatedButton(
                     child: const Text('Create'),
-                    onPressed: () => _addUser(context),
+                    onPressed: () => _addUser(context, dependecies!.contactDao),
                   ),
                 ),
               ),
@@ -55,14 +55,14 @@ class _contactFormState extends State<ContactForm> {
     );
   }
 
-  void _addUser(BuildContext context) {
+  void _addUser(BuildContext context, ContactDao contactDao) {
     final String name = widget._controllerName.text;
     final int? accountNumber =
         int.tryParse(widget._controllerAccountNumber.text);
 
     if (accountNumber != null) {
       final Contact newUser = Contact(0, name, accountNumber);
-      _dao.save(newUser).then((id) => Navigator.pop(context));
+      contactDao.save(newUser).then((id) => Navigator.pop(context));
     }
   }
 }

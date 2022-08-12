@@ -10,7 +10,7 @@ class TransactionWebclient {
   //para poder reproduzir em Cards, na tela de transactions.
   Future<List<Transaction>> findAll() async {
     final Response response =
-        await client.get(Uri.http('192.168.0.164:8080', 'transactions'));
+        await client.get(Uri.http('192.168.0.165:8080', 'transactions'));
     final List<dynamic> decodedJson = jsonDecode(response.body);
     return decodedJson
         .map((dynamic json) => Transaction.fromJson(json))
@@ -23,11 +23,11 @@ class TransactionWebclient {
     //em string com o jsonEncode.
     final String transectionJson = jsonEncode(transaction.toJson());
 
-    await Future.delayed(const Duration(seconds: 2));
+    // await Future.delayed(const Duration(seconds: 2));
 
     //com o metodo do post, enviamos o map para a api.
     final Response response = await client.post(
-      Uri.parse('http://192.168.0.164:8080/transactions'),
+      Uri.parse('http://192.168.0.165:8080/transactions'),
       headers: {
         'Content-type': 'application/json',
         'password': password,
@@ -35,7 +35,8 @@ class TransactionWebclient {
       body: transectionJson,
     );
     if (response.statusCode != 200) {
-      throw HttpException(_getMessage(response.statusCode), response.statusCode);
+      throw HttpException(
+          _getMessage(response.statusCode), response.statusCode);
     }
     return Transaction.fromJson(jsonDecode(response.body));
   }
